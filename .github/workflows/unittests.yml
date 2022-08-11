@@ -1,0 +1,20 @@
+name: run-tests
+on: [push]
+jobs:
+  Run-unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install python
+        run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt install -y python3
+      - name: Install pip
+        run: sudo apt install -y python3-pip 
+      - name: Install requirements
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip3 install -r requirements.txt
+          echo "## Installed requirements successfully"
+      - name: Run test cases
+        run: |
+          pytest
